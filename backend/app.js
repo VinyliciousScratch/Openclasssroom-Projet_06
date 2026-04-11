@@ -1,13 +1,19 @@
 const express = require('express');
+const mongoose = require('mongoose');
+
+
+const bookRoutes =require('./routes/book_routes');
+const userinforoutes = require('./routes/userinfo_routes');
+
+
+mongoose.connect('mongodb+srv://Utilisateur_test_1:projet06@clusterproject.lrjsqry.mongodb.net/test?retryWrites=true&w=majority')
+  .then(() => console.log('Connexion à MongoDB réussie !'))
+  .catch((err) => console.log('Connexion à MongoDB échouée !', err));
+
 
 const app = express();
 
-
 app.use(express.json());
-
-
-
-
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -17,73 +23,8 @@ app.use((req, res, next) => {
 });
 
 
-///////////////////////////////////////////////////////////////////////No Authentication///////////////////////////////////////////////////////////////
-
-
-///////////////////SE CONNECTER//////////////////
-
-
-app.post('/api/auth/login', (req, res, next) => {
-  console.log(req.body);
-  res.status(201).json({
-    message: 'Objet créé !'
-  });
-});
-
-///////////////////S'INCRIRE//////////////////
-
-app.post('/api/auth/signup', (req, res, next) => {
-  console.log(req.body);
-  res.status(201).json({
-    message: 'Objet créé !'
-  });
-});
-
-
-
-///////////////////LISTE DES LIVRES//////////////////
-
-app.get('/api/books', (req, res, next) => {
-  const stuff = [
-    {
-      _id: 'oeihfzeoi',
-      title: '1984',
-      author: ' George Orwell',
-      imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
-      year: 1949,
-      genre:'dystopia',
-      averageRating: 5,
-      userId: 'qsomihvqios',
-    },
-
-  ];
-  res.status(200).json(stuff);
-});
-
-
-
-
-///////////////////LISTE DES LIVRES ID//////////////////
-
-
-app.get('/api/books/:id', (req, res, next) => {
-
-  res.status(200).json(stuff);
-});
-
-
-///////////////////LISTE DES LIVRES RATING//////////////////
-
-app.get('/api/books/:id', (req, res, next) => {
-  
-  res.status(200).json(stuff);
-});
-
-
-
-
-
-
+app.use('/api/book',bookRoutes);
+app.use('/api/auth', userinforoutes);
 
 
 module.exports = app;
