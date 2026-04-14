@@ -1,11 +1,10 @@
 
-const { json } = require('express');
 const Book = require('../models/book');
 const fs =require('fs');
 
 
+
 exports.addbook = (req, res, next) => {
-  console.log('je suis arrivé')
   const bookobject = JSON.parse(req.body.book);
   delete bookobject._id;
   delete bookobject._userId;
@@ -75,3 +74,5 @@ exports.deletebook = (req, res, next) => {
 
     .catch(error => res.status(500).json({ error }));
 }
+
+
