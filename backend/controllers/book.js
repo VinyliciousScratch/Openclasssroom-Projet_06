@@ -76,3 +76,47 @@ exports.deletebook = (req, res, next) => {
 }
 
 
+exports.rating  = (req, res, next) => {
+  Book.findOne({ _id: req.params.id })
+  .then(book => {
+    console.log("ID reçu :", req.params.id);
+    console.log("USERID :", req.auth.userId);
+    console.log("note :", req.body.rating);
+    
+
+    if (book.ratings.some(r => r.userId === req.auth.userId)) {
+      return res.status(409).json({ message: 'Livre déjà noté' });
+    }
+
+    book.ratings.push({
+      userId: req.auth.userId,
+      grade: req.body.rating
+    });
+    
+    const total = book.ratings.reduce((sum, r) => sum + r.grade, 0);
+    book.averageRating = book.ratings.length > 0
+      ? total / book.ratings.length
+      : 0;
+
+
+
+    book.save()
+      .then(updatedBook => res.status(200).json(updatedBook))
+      .catch(error => res.status(400).json({ error }));
+  })
+
+
+  .catch(error => res.status(500).json({ error }));
+}
+
+
+exports.bestrating  = (req, res, next) => {
+
+  Book.find()                                        
+    .sort({ averageRating: -1 })                       //trie les livres par note décroissante
+    .limit(3)                                            //limiter aux 3 premiers du tri
+    .then(books => res.status(200).json(books))
+    .catch(error => res.status(500).json({ error }));
+
+
+}

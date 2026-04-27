@@ -8,6 +8,10 @@ const sharp = require('../middleware/sharp-config')
 
 router.post('/', auth, multer,sharp.uploadImage, bookCtrl.addbook );
 
+router.post('/:id/rating',auth, bookCtrl.rating );
+
+router.get('/bestrating', bookCtrl.bestrating);
+
 router.get('/', bookCtrl.listbook);
 
 router.get('/:id', bookCtrl.getidbook);
