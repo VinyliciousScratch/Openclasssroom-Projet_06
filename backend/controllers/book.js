@@ -95,7 +95,7 @@ exports.rating  = (req, res, next) => {
     
     const total = book.ratings.reduce((sum, r) => sum + r.grade, 0);
     book.averageRating = book.ratings.length > 0
-      ? total / book.ratings.length
+      ? Math.round((total / book.ratings.length) * 10) / 10
       : 0;
 
 
