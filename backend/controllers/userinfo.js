@@ -5,7 +5,6 @@ const Userinfo = require('../models/UserInfo');
 const jwt = require("jsonwebtoken");             
 
 
-
 exports.signup = (req, res, next) => {
 
     bcrypt.hash(req.body.password,10)
@@ -39,7 +38,7 @@ exports.login= (req, res, next) => {
                     } else{
                         res.status(200).json({ 
                             userId: user._id,
-                            token: jwt.sign({userId :user._id},"Jesuisuneclé:)ldfjgblkjdflbk",{expiresIn: '1h'})
+                            token: jwt.sign({userId :user._id},process.env.AUTH_KEY,{expiresIn: '1h'})
                         });
 
                     }
@@ -52,10 +51,4 @@ exports.login= (req, res, next) => {
 
         })
         .catch(error => res.status(500).json({error}));
-
-
-
-
-
-
 };

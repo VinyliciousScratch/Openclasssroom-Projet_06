@@ -113,8 +113,8 @@ exports.rating  = (req, res, next) => {
 exports.bestrating  = (req, res, next) => {
 
   Book.find()                                        
-    .sort({ averageRating: -1 })                       //trie les livres par note décroissante
-    .limit(3)                                            //limiter aux 3 premiers du tri
+    .sort({ averageRating: -1 })                      
+    .limit(3)                                            
     .then(books => res.status(200).json(books))
     .catch(error => res.status(500).json({ error }));
 
